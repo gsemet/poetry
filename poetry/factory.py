@@ -1,6 +1,8 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+import os
+
 from typing import Dict
 from typing import Optional
 
@@ -33,7 +35,9 @@ class Factory(BaseFactory):
         base_poetry = super(Factory, self).create_poetry(cwd)
 
         locker = Locker(
-            base_poetry.file.parent / "poetry.lock", base_poetry.local_config
+            base_poetry.file.parent
+            / os.getenv("POETRY_LOCK_FILENAME", default="poetry.lock",),
+            base_poetry.local_config,
         )
 
         # Loading global configuration
